@@ -44,10 +44,10 @@ public class InventoryProvider extends ContentProvider {
 
     static {
         sUriMatcher.addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_INVENTOTY,
-                INVENTORY);
+            INVENTORY);
         sUriMatcher
-                .addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_INVENTOTY + "/#",
-                        INVENTORY_ID);
+            .addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_INVENTOTY + "/#",
+                INVENTORY_ID);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class InventoryProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection,
-                        @Nullable String[] selectionArgs, @Nullable String sortOrder) {
+        @Nullable String[] selectionArgs, @Nullable String sortOrder) {
 
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
@@ -70,7 +70,7 @@ public class InventoryProvider extends ContentProvider {
         switch (match) {
             case INVENTORY:
                 cursor = db
-                        .query(InventoryEntry.TABLE_NAME, projection, null, null, null, null, null);
+                    .query(InventoryEntry.TABLE_NAME, projection, null, null, null, null, null);
 
                 break;
             case INVENTORY_ID:
@@ -78,11 +78,13 @@ public class InventoryProvider extends ContentProvider {
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
                 cursor = db.query(InventoryEntry.TABLE_NAME, projection, selection, selectionArgs,
-                        null, null, sortOrder);
+                    null, null, sortOrder);
                 break;
             default:
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
         }
+
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
         return cursor;
     }
@@ -125,32 +127,46 @@ public class InventoryProvider extends ContentProvider {
             return null;
         }
 
+        getContext().getContentResolver().notifyChange(uri, null);
+
         return ContentUris.withAppendedId(uri, id);
     }
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection,
-                      @Nullable String[] selectionArgs) {
-
-        // Get writeable database
-        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+        @Nullable String[] selectionArgs) {
 
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case INVENTORY:
-                return database.delete(InventoryEntry.TABLE_NAME, selection, selectionArgs);
+                return deleteInventory(uri, selection, selectionArgs);
             case INVENTORY_ID:
                 selection = InventoryEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                return database.delete(InventoryEntry.TABLE_NAME, selection, selectionArgs);
+                return deleteInventory(uri, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException("Deletion is not supported for " + uri);
         }
     }
 
+    private int deleteInventory(@NonNull Uri uri, @Nullable String selection,
+        @Nullable String[] selectionArgs) {
+
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        int rowsDeleted = db.delete(InventoryEntry.TABLE_NAME, selection, selectionArgs);
+
+        if (rowsDeleted > 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return rowsDeleted;
+
+    }
+
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String
-            selection, @Nullable String[] selectionArgs) {
+        selection, @Nullable String[] selectionArgs) {
 
         final int match = sUriMatcher.match(uri);
         switch (match) {
@@ -166,7 +182,7 @@ public class InventoryProvider extends ContentProvider {
     }
 
     private int updateInventory(Uri uri, ContentValues values, String selection,
-                                String[] selectionArgs) {
+        String[] selectionArgs) {
 
         validateInventoryValues(values);
 
@@ -176,7 +192,14 @@ public class InventoryProvider extends ContentProvider {
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
-        return database.update(InventoryEntry.TABLE_NAME, values, selection, selectionArgs);
+        int rowsUpdated = database
+            .update(InventoryEntry.TABLE_NAME, values, selection, selectionArgs);
+
+        if (rowsUpdated > 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return rowsUpdated;
     }
 
     private void validateInventoryValues(ContentValues values) {

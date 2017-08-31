@@ -16,6 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".InventoryEditorActivity" />
+
         <provider
             android:authorities="example.com.br.inventoryapp.provider"
             android:exported="false"
