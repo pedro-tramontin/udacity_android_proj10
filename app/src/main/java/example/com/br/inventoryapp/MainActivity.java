@@ -6,18 +6,18 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity implements
     @BindView(R.id.inventory_empty_view)
     TextView mEmptyView;
 
+    @BindView(R.id.add_product)
+    FloatingActionButton mActionButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,26 +48,27 @@ public class MainActivity extends AppCompatActivity implements
 
         ButterKnife.bind(this);
 
-        //Cursor cursor = readInventory();
         mInventoryAdapter = new InventoryAdapter(this, null);
         mInventoryListView.setAdapter(mInventoryAdapter);
         mInventoryListView.setEmptyView(mEmptyView);
-
         mInventoryListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, String.format("view: %s", view.toString()));
-
                 Cursor cursor = (Cursor) mInventoryAdapter.getItem(position);
 
-                int rowId = cursor.getInt(0);
-                Uri itemUri = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, rowId);
+                Uri itemUri = ContentUris
+                    .withAppendedId(InventoryEntry.CONTENT_URI, cursor.getInt(0));
 
                 startEditorActivity(itemUri);
             }
         });
 
-        //testReadWrite();
+        mActionButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startEditorActivity(null);
+            }
+        });
 
         getSupportLoaderManager().initLoader(INVENTORY_LOADER, null, this);
     }
@@ -133,12 +137,12 @@ public class MainActivity extends AppCompatActivity implements
                 null);
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
 
         return true;
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

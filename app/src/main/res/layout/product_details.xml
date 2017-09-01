@@ -1,57 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <LinearLayout style="@style/ProductDetailsInfoLayout">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name:"/>
+            style="@style/ProductDetailsInfoTitle"
+            android:text="@string/product_name_title" />
 
         <EditText
             android:id="@+id/product_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Product name"/>
+            style="@style/ProductDetailsInfoEditText"
+            android:hint="@string/product_name_hint" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <LinearLayout style="@style/ProductDetailsInfoLayout">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Quantity:"/>
+            style="@style/ProductDetailsInfoTitle"
+            android:text="@string/product_price_title" />
 
         <EditText
-            android:id="@+id/product_quantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Product quantity"/>
+            android:id="@+id/product_price"
+            style="@style/ProductDetailsInfoEditText"
+            android:hint="@string/product_price_hint" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <LinearLayout style="@style/ProductDetailsInfoLayout">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Price:"/>
+            style="@style/ProductDetailsInfoTitle"
+            android:text="@string/product_quantity_title" />
 
         <EditText
-            android:id="@+id/inventory_price"
-            android:layout_width="wrap_content"
+            android:id="@+id/product_quantity_step"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Product price"/>
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:gravity="center"
+            android:hint="@string/product_quantity_hint" />
+
+    </LinearLayout>
+
+    <LinearLayout style="@style/ProductDetailsInfoLayout">
+
+        <TextView
+            style="@style/ProductDetailsInfoTitle"
+            android:text="@string/product_picture_title" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/product_picture"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/border"
+                android:scaleType="fitXY" />
+
+            <ImageButton
+                android:id="@+id/button_choose_file"
+                style="@style/ProductDetailsInfoPictureButton"
+                android:layout_marginEnd="16dp"
+                android:layout_toStartOf="@id/product_picture"
+                android:src="@drawable/ic_insert_drive_file_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/button_call_camera"
+                style="@style/ProductDetailsInfoPictureButton"
+                android:layout_marginStart="16dp"
+                android:layout_centerInParent="true"
+                android:layout_toEndOf="@id/product_picture"
+                android:src="@drawable/ic_photo_camera_black_24dp" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 
@@ -59,6 +89,11 @@
         android:id="@+id/button_save_inventory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save"/>
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:drawable/dialog_holo_light_frame"
+        android:backgroundTint="@color/colorSecondary"
+        android:backgroundTintMode="multiply"
+        android:text="@string/button_save_product" />
 
 </LinearLayout>

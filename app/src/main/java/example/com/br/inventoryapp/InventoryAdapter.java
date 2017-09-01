@@ -1,6 +1,7 @@
 package example.com.br.inventoryapp;
 
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
@@ -13,12 +14,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.com.br.inventoryapp.InventoryContract.InventoryEntry;
+import java.util.Locale;
 
 /**
  * Created by pedro on 8/29/17.
@@ -45,26 +47,42 @@ public class InventoryAdapter extends CursorAdapter {
     public void bindView(View view, final Context context, Cursor cursor) {
         ViewHolder holder = (ViewHolder) view.getTag();
 
-        int nameColumnIndex = cursor
-                .getColumnIndex(InventoryContract.InventoryEntry.COLUMN_NAME_NAME);
-        int priceColumnIndex = cursor
-                .getColumnIndex(InventoryContract.InventoryEntry.COLUMN_NAME_PRICE);
-        int quantityColumnIndex = cursor
-                .getColumnIndex(InventoryContract.InventoryEntry.COLUMN_NAME_QUANTITY);
+        // Masks for price and quantity
+        String price_mask = context.getResources().getString(R.string.product_price_mask);
+        String quantity_mask = context.getResources().getString(R.string.product_quantity_mask);
 
-        holder.id = cursor.getInt(0);
-        holder.name.setText(cursor.getString(nameColumnIndex));
-        holder.quantity.setText(cursor.getString(quantityColumnIndex));
-        holder.price.setText(cursor.getString(priceColumnIndex));
-        holder.deleteItem.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                View listItemLayout = (View) v.getParent();
-                ViewHolder holder = (ViewHolder) listItemLayout.getTag();
+        Locale defaultLocale = Locale.getDefault();
 
-                showDeleteConfirmationDialog(context, holder.id);
-            }
-        });
+        // Product values
+        final int id = cursor.getInt(0);
+        final String name = getString(cursor, InventoryContract.InventoryEntry.COLUMN_NAME_NAME);
+        final int quantity = getInt(cursor, InventoryContract.InventoryEntry.COLUMN_NAME_QUANTITY);
+        final float price = getFloat(cursor, InventoryContract.InventoryEntry.COLUMN_NAME_PRICE);
+
+        // Sets the views values
+        holder.id = id;
+        holder.name.setText(name);
+        holder.price.setText(String.format(defaultLocale, price_mask, price));
+        holder.quantity.setText(String.format(defaultLocale, quantity_mask, quantity));
+
+        if (quantity == 0) {
+            holder.btnSell.setEnabled(false);
+        } else {
+            holder.btnSell.setEnabled(true);
+            holder.btnSell.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    View listItemLayout = (View) v.getParent();
+                    ViewHolder holder = (ViewHolder) listItemLayout.getTag();
+
+                    if (quantity > 0) {
+                        setProductQuantity(context, id, quantity - 1);
+                    }
+
+                    //showDeleteConfirmationDialog(context, holder.id);
+                }
+            });
+        }
     }
 
     static class ViewHolder {
@@ -74,14 +92,14 @@ public class InventoryAdapter extends CursorAdapter {
         @BindView(R.id.product_name)
         TextView name;
 
-        @BindView(R.id.product_quantity)
-        TextView quantity;
-
         @BindView(R.id.inventory_price)
         TextView price;
 
+        @BindView(R.id.product_quantity)
+        TextView quantity;
+
         @BindView(R.id.button_sell_product)
-        Button deleteItem;
+        Button btnSell;
 
         private ViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -117,8 +135,36 @@ public class InventoryAdapter extends CursorAdapter {
         Uri itemUri = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, id);
 
         int rowDeleted = context.getContentResolver()
-                .delete(itemUri, null, null);
+            .delete(itemUri, null, null);
 
         Log.i(TAG, String.format("Deleted ID %d", rowDeleted));
+    }
+
+    private String getString(Cursor cursor, String columnName) {
+        return cursor.getString(cursor.getColumnIndex(columnName));
+    }
+
+    private Float getFloat(Cursor cursor, String columnName) {
+        return cursor.getFloat(cursor.getColumnIndex(columnName));
+    }
+
+    private Integer getInt(Cursor cursor, String columnName) {
+        return cursor.getInt(cursor.getColumnIndex(columnName));
+    }
+
+    private void setProductQuantity(Context context, int id, int newQuantity) {
+        ContentValues values = new ContentValues();
+        values.put(InventoryEntry.COLUMN_NAME_QUANTITY, newQuantity);
+
+        Uri itemUri = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, id);
+
+        int rowCount = context.getContentResolver().update(itemUri, values, null, null);
+        if (rowCount == 0) {
+            Toast.makeText(context, context.getResources().getString(R.string.fail_to_sell_product),
+                Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, context.getResources().getString(R.string.product_sold),
+                Toast.LENGTH_SHORT).show();
+        }
     }
 }

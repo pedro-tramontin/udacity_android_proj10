@@ -43,7 +43,7 @@ public class InventoryEditorActivity extends AppCompatActivity implements Loader
     @BindView(R.id.product_quantity)
     TextView mItemQuantity;
 
-    @BindView(R.id.inventory_price)
+    @BindView(R.id.product_price)
     TextView mItemPrice;
 
     @BindView(R.id.button_save_inventory)

@@ -3,4 +3,25 @@
 
     <string name="list_empty_message">The inventory is empty now\nClick the button with the \'+\'
     sign to add products</string>
+
+    <string name="product_name_title">Name</string>
+    <string name="product_quantity_title">Quantity</string>
+    <string name="product_price_title">Price</string>
+    <string name="product_picture_title">Picture</string>
+
+    <string name="product_name_hint">name here</string>
+    <string name="product_quantity_hint">the quantity</string>
+    <string name="product_price_hint">the price</string>
+
+    <string name="product_price_mask">$ %.2f</string>
+    <string name="product_quantity_mask">"%d units left"</string>
+
+    <string name="button_save_product">Save</string>
+    <string name="button_sell_product">Sell</string>
+
+    <string name="fail_to_sell_product">Fail to sell product</string>
+    <string name="product_sold">Product sold!</string>
+
+    <string name="product_picture_description">Picture of the product</string>
+
 </resources>
