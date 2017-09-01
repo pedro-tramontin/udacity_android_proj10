@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,13 +11,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name:" />
+            android:text="Name:"/>
 
         <EditText
-            android:id="@+id/inventory_name"
+            android:id="@+id/product_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Product name" />
+            android:hint="Product name"/>
 
     </LinearLayout>
 
@@ -28,13 +28,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Quantity:" />
+            android:text="Quantity:"/>
 
         <EditText
-            android:id="@+id/inventory_quantity"
+            android:id="@+id/product_quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Product quantity" />
+            android:hint="Product quantity"/>
 
     </LinearLayout>
 
@@ -45,13 +45,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Price:" />
+            android:text="Price:"/>
 
         <EditText
             android:id="@+id/inventory_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Product price" />
+            android:hint="Product price"/>
 
     </LinearLayout>
 
@@ -59,6 +59,6 @@
         android:id="@+id/button_save_inventory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save" />
+        android:text="Save"/>
 
 </LinearLayout>

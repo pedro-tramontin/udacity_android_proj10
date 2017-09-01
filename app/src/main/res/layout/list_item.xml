@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_vertical"
+        android:scaleType="fitXY"
+        tools:src="@drawable/ic_add_black_24dp"/>
 
     <LinearLayout
         android:id="@+id/layout_item_info"
@@ -13,34 +20,43 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/inventory_name"
+            android:id="@+id/product_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            tools:text="Inventory Name" />
-
-        <TextView
-            android:id="@+id/inventory_quantity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            tools:text="Inventory Quantity" />
+            android:padding="8dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            tools:text="Product name"/>
 
         <TextView
             android:id="@+id/inventory_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            tools:text="Inventory Price" />
+            android:padding="8dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            tools:text="$ 99.99"/>
+
+        <TextView
+            android:id="@+id/product_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="8dp"
+            tools:text="10 units left"/>
+
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/button_delete_item"
+    <Button
+        android:id="@+id/button_sell_product"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="@android:drawable/dialog_holo_light_frame"
+        android:backgroundTint="@color/colorSecondary"
+        android:backgroundTintMode="multiply"
         android:padding="8dp"
-        android:background="@android:color/black"
-        android:src="@drawable/ic_delete_white_24dp" />
+        android:text="Sell"/>
 
 </LinearLayout>

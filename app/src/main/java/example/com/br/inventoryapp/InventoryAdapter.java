@@ -13,9 +13,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.com.br.inventoryapp.InventoryContract.InventoryEntry;
@@ -46,11 +46,11 @@ public class InventoryAdapter extends CursorAdapter {
         ViewHolder holder = (ViewHolder) view.getTag();
 
         int nameColumnIndex = cursor
-            .getColumnIndex(InventoryContract.InventoryEntry.COLUMN_NAME_NAME);
+                .getColumnIndex(InventoryContract.InventoryEntry.COLUMN_NAME_NAME);
         int priceColumnIndex = cursor
-            .getColumnIndex(InventoryContract.InventoryEntry.COLUMN_NAME_PRICE);
+                .getColumnIndex(InventoryContract.InventoryEntry.COLUMN_NAME_PRICE);
         int quantityColumnIndex = cursor
-            .getColumnIndex(InventoryContract.InventoryEntry.COLUMN_NAME_QUANTITY);
+                .getColumnIndex(InventoryContract.InventoryEntry.COLUMN_NAME_QUANTITY);
 
         holder.id = cursor.getInt(0);
         holder.name.setText(cursor.getString(nameColumnIndex));
@@ -71,17 +71,17 @@ public class InventoryAdapter extends CursorAdapter {
 
         int id;
 
-        @BindView(R.id.inventory_name)
+        @BindView(R.id.product_name)
         TextView name;
 
-        @BindView(R.id.inventory_quantity)
+        @BindView(R.id.product_quantity)
         TextView quantity;
 
         @BindView(R.id.inventory_price)
         TextView price;
 
-        @BindView(R.id.button_delete_item)
-        ImageView deleteItem;
+        @BindView(R.id.button_sell_product)
+        Button deleteItem;
 
         private ViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -117,7 +117,7 @@ public class InventoryAdapter extends CursorAdapter {
         Uri itemUri = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, id);
 
         int rowDeleted = context.getContentResolver()
-            .delete(itemUri, null, null);
+                .delete(itemUri, null, null);
 
         Log.i(TAG, String.format("Deleted ID %d", rowDeleted));
     }

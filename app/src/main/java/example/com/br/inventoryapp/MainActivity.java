@@ -14,10 +14,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import android.widget.TextView;
@@ -37,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements
     @BindView(R.id.inventory_list_view)
     ListView mInventoryListView;
 
-    @BindView(R.id.empty_view)
+    @BindView(R.id.inventory_empty_view)
     TextView mEmptyView;
 
     @Override

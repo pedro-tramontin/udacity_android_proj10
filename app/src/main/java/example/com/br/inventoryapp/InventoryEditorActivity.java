@@ -16,10 +16,8 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,10 +37,10 @@ public class InventoryEditorActivity extends AppCompatActivity implements Loader
 
     private Uri itemUri;
 
-    @BindView(R.id.inventory_name)
+    @BindView(R.id.product_name)
     TextView mItemName;
 
-    @BindView(R.id.inventory_quantity)
+    @BindView(R.id.product_quantity)
     TextView mItemQuantity;
 
     @BindView(R.id.inventory_price)
@@ -78,7 +76,7 @@ public class InventoryEditorActivity extends AppCompatActivity implements Loader
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.inventory_form);
+        setContentView(R.layout.product_details);
 
         ButterKnife.bind(this);
 
@@ -159,7 +157,7 @@ public class InventoryEditorActivity extends AppCompatActivity implements Loader
 
                 Log.i(TAG, String.format("Row Count: %d", rowCount));
 
-                if (rowCount == 0) {
+                if (rowCount != 0) {
                     // If no rows were affected, then there was an error with the update.
                     Toast.makeText(this, "Updated!", Toast.LENGTH_SHORT).show();
                 } else {
