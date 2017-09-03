@@ -1,6 +1,7 @@
 package example.com.br.inventoryapp;
 
 import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
@@ -9,32 +10,25 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.util.Log;
 
 import example.com.br.inventoryapp.InventoryContract.InventoryEntry;
 
-import static android.transition.Fade.IN;
-
 /**
- * Created by ptramontin on 8/29/17.
+ * Provider for the inventory DB
  */
-
 public class InventoryProvider extends ContentProvider {
-
-    private static final String TAG = InventoryProvider.class.getSimpleName();
-
-    private InventoryDbHelper mDbHelper;
 
     /**
      * URI matcher code for the content URI for the inventory table
      */
     public static final int INVENTORY = 100;
-
     /**
      * URI matcher code for the content URI for a single inventory in the inventory table
      */
     public static final int INVENTORY_ID = 101;
-
+    private static final String TAG = InventoryProvider.class.getSimpleName();
     /**
      * URI matcher object to match a context URI to a corresponding code.
      * The input passed into the constructor represents the code to return for the root URI.
@@ -44,11 +38,13 @@ public class InventoryProvider extends ContentProvider {
 
     static {
         sUriMatcher.addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_INVENTOTY,
-            INVENTORY);
+                INVENTORY);
         sUriMatcher
-            .addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_INVENTOTY + "/#",
-                INVENTORY_ID);
+                .addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_INVENTOTY + "/#",
+                        INVENTORY_ID);
     }
+
+    private InventoryDbHelper mDbHelper;
 
     @Override
     public boolean onCreate() {
@@ -60,17 +56,17 @@ public class InventoryProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection,
-        @Nullable String[] selectionArgs, @Nullable String sortOrder) {
+                        @Nullable String[] selectionArgs, @Nullable String sortOrder) {
 
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        Cursor cursor = null;
+        Cursor cursor;
 
         int match = sUriMatcher.match(uri);
         switch (match) {
             case INVENTORY:
                 cursor = db
-                    .query(InventoryEntry.TABLE_NAME, projection, null, null, null, null, null);
+                        .query(InventoryEntry.TABLE_NAME, projection, null, null, null, null, null);
 
                 break;
             case INVENTORY_ID:
@@ -78,13 +74,14 @@ public class InventoryProvider extends ContentProvider {
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
                 cursor = db.query(InventoryEntry.TABLE_NAME, projection, selection, selectionArgs,
-                    null, null, sortOrder);
+                        null, null, sortOrder);
                 break;
             default:
-                throw new IllegalArgumentException("Cannot query unknown URI " + uri);
+                throw new IllegalArgumentException(Utils.format(Utils.getString(getContext(), R
+                        .string.error_query_unknown_uri), uri.toString()));
         }
 
-        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+        cursor.setNotificationUri(getContentResolver(), uri);
 
         return cursor;
     }
@@ -99,7 +96,8 @@ public class InventoryProvider extends ContentProvider {
             case INVENTORY_ID:
                 return InventoryEntry.CONTENT_ITEM_TYPE;
             default:
-                throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
+                throw new IllegalStateException(Utils.format(Utils.getString(getContext(), R
+                        .string.error_unknown_uri), uri.toString(), match));
         }
     }
 
@@ -111,30 +109,32 @@ public class InventoryProvider extends ContentProvider {
             case INVENTORY:
                 return insertInventory(uri, values);
             default:
-                throw new IllegalArgumentException("Insertion is not supported for " + uri);
+                throw new IllegalArgumentException(Utils.format(Utils.getString(getContext(), R
+                        .string.error_invalid_uri_insert), uri.toString()));
         }
     }
 
     private Uri insertInventory(Uri uri, ContentValues values) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        validateInventoryValues(values);
+        validateInventoryValues(values, true);
 
         long id = db.insert(InventoryEntry.TABLE_NAME, null, values);
 
         if (id == -1) {
-            Log.e(TAG, "Failed to insert row for " + uri);
+            Log.e(TAG, Utils.format(Utils.getString(getContext(), R.string
+                    .error_provider_insert_failed), uri.toString()));
             return null;
         }
 
-        getContext().getContentResolver().notifyChange(uri, null);
+        notifyChange(uri);
 
         return ContentUris.withAppendedId(uri, id);
     }
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection,
-        @Nullable String[] selectionArgs) {
+                      @Nullable String[] selectionArgs) {
 
         final int match = sUriMatcher.match(uri);
         switch (match) {
@@ -145,19 +145,20 @@ public class InventoryProvider extends ContentProvider {
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return deleteInventory(uri, selection, selectionArgs);
             default:
-                throw new IllegalArgumentException("Deletion is not supported for " + uri);
+                throw new IllegalArgumentException(Utils.format(Utils.getString(getContext(), R
+                        .string.error_invalid_uri_delete), uri.toString()));
         }
     }
 
     private int deleteInventory(@NonNull Uri uri, @Nullable String selection,
-        @Nullable String[] selectionArgs) {
+                                @Nullable String[] selectionArgs) {
 
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         int rowsDeleted = db.delete(InventoryEntry.TABLE_NAME, selection, selectionArgs);
 
         if (rowsDeleted > 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
+            notifyChange(uri);
         }
 
         return rowsDeleted;
@@ -166,7 +167,7 @@ public class InventoryProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String
-        selection, @Nullable String[] selectionArgs) {
+            selection, @Nullable String[] selectionArgs) {
 
         final int match = sUriMatcher.match(uri);
         switch (match) {
@@ -177,14 +178,15 @@ public class InventoryProvider extends ContentProvider {
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return updateInventory(uri, values, selection, selectionArgs);
             default:
-                throw new IllegalArgumentException("Update is not supported for " + uri);
+                throw new IllegalArgumentException(Utils.format(Utils.getString(getContext(), R
+                        .string.error_invalid_uri_update), uri.toString()));
         }
     }
 
     private int updateInventory(Uri uri, ContentValues values, String selection,
-        String[] selectionArgs) {
+                                String[] selectionArgs) {
 
-        validateInventoryValues(values);
+        validateInventoryValues(values, false);
 
         if (values.size() == 0) {
             return 0;
@@ -193,35 +195,74 @@ public class InventoryProvider extends ContentProvider {
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
         int rowsUpdated = database
-            .update(InventoryEntry.TABLE_NAME, values, selection, selectionArgs);
+                .update(InventoryEntry.TABLE_NAME, values, selection, selectionArgs);
 
         if (rowsUpdated > 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
+            notifyChange(uri);
         }
 
         return rowsUpdated;
     }
 
-    private void validateInventoryValues(ContentValues values) {
+    private void validateInventoryValues(ContentValues values, boolean insert) {
         if (values.containsKey(InventoryEntry.COLUMN_NAME_NAME)) {
             String name = values.getAsString(InventoryEntry.COLUMN_NAME_NAME);
             if (name == null) {
-                throw new IllegalArgumentException("Inventory requires a name");
+                throwWithMessage(R.string.error_provider_product_name_required);
+            }
+        } else {
+            if (insert) {
+                throwWithMessage(R.string.error_provider_product_name_required);
             }
         }
 
         if (values.containsKey(InventoryEntry.COLUMN_NAME_QUANTITY)) {
             Integer quantity = values.getAsInteger(InventoryEntry.COLUMN_NAME_QUANTITY);
             if (quantity == null || quantity < 0) {
-                throw new IllegalArgumentException("Inventory requires a quantity");
+                throwWithMessage(R.string.error_provider_product_quantity_required);
+            }
+        } else {
+            if (insert) {
+                throwWithMessage(R.string.error_provider_product_quantity_required);
             }
         }
 
         if (values.containsKey(InventoryEntry.COLUMN_NAME_PRICE)) {
             Float price = values.getAsFloat(InventoryEntry.COLUMN_NAME_PRICE);
             if (price == null || price < 0) {
-                throw new IllegalArgumentException("Inventory requires a price");
+                throwWithMessage(R.string.error_provider_product_price_required);
+            }
+        } else {
+            if (insert) {
+                throwWithMessage(R.string.error_provider_product_price_required);
             }
         }
+
+        if (values.containsKey(InventoryEntry.COLUMN_NAME_PICTURE)) {
+            byte[] picture = values.getAsByteArray(InventoryEntry.COLUMN_NAME_PICTURE);
+            if (picture == null) {
+                if (insert) {
+                    throwWithMessage(R.string.error_provider_product_picture_required);
+                }
+            }
+        }
+    }
+
+    private void throwWithMessage(@StringRes int stringId) {
+        throw new IllegalArgumentException(Utils.getString(getContext(), stringId));
+    }
+
+    private void notifyChange(Uri uri) {
+        if (getContext() != null) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+    }
+
+    private ContentResolver getContentResolver() {
+        if (getContext() != null) {
+            return getContext().getContentResolver();
+        }
+
+        return null;
     }
 }

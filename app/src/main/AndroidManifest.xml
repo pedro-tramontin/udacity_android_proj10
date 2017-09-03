@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="example.com.br.inventoryapp">
+          package="example.com.br.inventoryapp">
+
+    <uses-feature android:name="android.hardware.camera"/>
 
     <application
         android:allowBackup="true"
@@ -11,17 +13,17 @@
         android:theme="@style/AppTheme">
         <activity android:name="example.com.br.inventoryapp.MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".InventoryEditorActivity" />
+        <activity android:name=".InventoryEditorActivity"/>
 
         <provider
+            android:name=".InventoryProvider"
             android:authorities="example.com.br.inventoryapp.provider"
-            android:exported="false"
-            android:name=".InventoryProvider" />
+            android:exported="false"/>
     </application>
 
 </manifest>

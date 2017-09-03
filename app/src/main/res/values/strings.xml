@@ -13,9 +13,11 @@
     <string name="product_quantity_hint">the quantity</string>
     <string name="product_price_hint">the price</string>
 
-    <string name="product_price_mask">$ %.2f</string>
-    <string name="product_quantity_mask">"%d units left"</string>
+    <string name="product_price_mask">$ \u0025.2f</string>
+    <string name="product_quantity_mask">"\u0025d units left"</string>
 
+    <string name="button_delete_product">Delete</string>
+    <string name="button_order_product">Order</string>
     <string name="button_save_product">Save</string>
     <string name="button_sell_product">Sell</string>
 
@@ -23,5 +25,48 @@
     <string name="product_sold">Product sold!</string>
 
     <string name="product_picture_description">Picture of the product</string>
+    <string name="step">step:</string>
 
+    <string name="edit_mode_title">Edit inventory</string>
+    <string name="add_mode_title">Add inventory</string>
+
+    <string name="name_required">Name is required</string>
+    <string name="price_required">Price is required</string>
+    <string name="picture_required">Picture is required</string>
+
+    <string name="email_subject">New order of \u0025s</string>
+    <string
+        name="email_body">Details of product \u0025s\nQuantity: \u0025d\nPrice: \u0025.2f</string>
+
+    <string name="dialog_title_not_saved">Changes not saved</string>
+    <string name="dialog_not_saved_positive">Discard</string>
+    <string name="dialog_not_saved_negative">Keep Editing</string>
+
+    <string name="dialog_title_delete">Really want to delete this item?</string>
+    <string name="dialog_delete_positive">Delete</string>
+    <string name="dialog_delete_negative">Cancel</string>
+
+    <string name="error_get_image_from_uri">Error getting image from Uri</string>
+    <string name="error_save_before_ordering">You need to save before ordering</string>
+    <string name="error_parsing_price_failed">Parsing of product price failed</string>
+    <string name="error_parsing_price_exception">Error parsing product price</string>
+    <string name="error_insert">Fail to insert</string>
+    <string name="error_update">Fail to update</string>
+    <string name="error_delete">Fail to delete</string>
+    <string name="error_opening_file">Oops, something went wrong when opening the file</string>
+    <string name="error_query_unknown_uri">Cannot query unknown URI \u0025s</string>
+    <string name="error_unknown_uri">Unknown URI \u0025s with match \u0025d</string>
+    <string name="error_invalid_uri_insert">Insertion is not supported for \u0025s</string>
+    <string name="error_invalid_uri_update">Update is not supported for \u0025s</string>
+    <string name="error_invalid_uri_delete">Delete is not supported for \u0025s</string>
+    <string name="error_provider_insert_failed">Failed to insert row for \u0025s</string>
+    <string name="error_provider_product_name_required">Product name is required</string>
+    <string name="error_provider_product_price_required">Product price invalid or not
+        present</string>
+    <string name="error_provider_product_quantity_required">Product quantity invalid or not
+    present</string>
+    <string name="error_provider_product_picture_required">Product picture is required</string>
+    <string name="error_inputstream_from_uri">Error getting InputStream from uri, can\'t rotate
+        image if needed</string>
+    <string name="error_exif">Erro getting exif information from InputStream</string>
 </resources>

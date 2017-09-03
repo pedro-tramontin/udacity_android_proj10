@@ -1,99 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
-
-    <LinearLayout style="@style/ProductDetailsInfoLayout">
-
-        <TextView
-            style="@style/ProductDetailsInfoTitle"
-            android:text="@string/product_name_title" />
-
-        <EditText
-            android:id="@+id/product_name"
-            style="@style/ProductDetailsInfoEditText"
-            android:hint="@string/product_name_hint" />
-
-    </LinearLayout>
-
-    <LinearLayout style="@style/ProductDetailsInfoLayout">
-
-        <TextView
-            style="@style/ProductDetailsInfoTitle"
-            android:text="@string/product_price_title" />
-
-        <EditText
-            android:id="@+id/product_price"
-            style="@style/ProductDetailsInfoEditText"
-            android:hint="@string/product_price_hint" />
-
-    </LinearLayout>
-
-    <LinearLayout style="@style/ProductDetailsInfoLayout">
-
-        <TextView
-            style="@style/ProductDetailsInfoTitle"
-            android:text="@string/product_quantity_title" />
-
-        <EditText
-            android:id="@+id/product_quantity_step"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:gravity="center"
-            android:hint="@string/product_quantity_hint" />
+            android:layout_height="match_parent">
 
-    </LinearLayout>
-
-    <LinearLayout style="@style/ProductDetailsInfoLayout">
-
-        <TextView
-            style="@style/ProductDetailsInfoTitle"
-            android:text="@string/product_picture_title" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/product_picture"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/border"
-                android:scaleType="fitXY" />
-
-            <ImageButton
-                android:id="@+id/button_choose_file"
-                style="@style/ProductDetailsInfoPictureButton"
-                android:layout_marginEnd="16dp"
-                android:layout_toStartOf="@id/product_picture"
-                android:src="@drawable/ic_insert_drive_file_black_24dp" />
-
-            <ImageButton
-                android:id="@+id/button_call_camera"
-                style="@style/ProductDetailsInfoPictureButton"
-                android:layout_marginStart="16dp"
-                android:layout_centerInParent="true"
-                android:layout_toEndOf="@id/product_picture"
-                android:src="@drawable/ic_photo_camera_black_24dp" />
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/button_save_inventory"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@android:drawable/dialog_holo_light_frame"
-        android:backgroundTint="@color/colorSecondary"
-        android:backgroundTintMode="multiply"
-        android:text="@string/button_save_product" />
+        android:orientation="vertical">
 
-</LinearLayout>
+        <LinearLayout style="@style/ProductDetailsInfoLayout">
+
+            <TextView
+                style="@style/ProductDetailsInfoTitle"
+                android:text="@string/product_name_title"/>
+
+            <EditText
+                android:id="@+id/product_name"
+                style="@style/ProductDetailsInfoEditText"
+                android:hint="@string/product_name_hint"/>
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/ProductDetailsInfoLayout">
+
+            <TextView
+                style="@style/ProductDetailsInfoTitle"
+                android:text="@string/product_price_title"/>
+
+            <EditText
+                android:id="@+id/product_price"
+                style="@style/ProductDetailsInfoEditText"
+                android:hint="@string/product_price_hint"
+                android:inputType="numberDecimal"/>
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/ProductDetailsInfoLayout">
+
+            <TextView
+                style="@style/ProductDetailsInfoTitle"
+                android:text="@string/product_quantity_title"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <TextView
+                        style="@style/whWrapContent"
+                        android:paddingEnd="@dimen/simple_padding"
+                        android:paddingStart="@dimen/simple_padding"
+                        android:text="@string/step"
+                        android:textAppearance="?android:textAppearanceMedium"
+                        android:textStyle="bold"/>
+
+                    <EditText
+                        android:id="@+id/product_quantity_step"
+                        style="@style/whWrapContent"
+                        android:gravity="center"
+                        android:hint="@string/product_quantity_hint"
+                        android:inputType="number"/>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/text_product_quantity"
+                        style="@style/whWrapContent"
+                        android:layout_centerInParent="true"
+                        android:padding="@dimen/simple_padding"
+                        tools:text="10"/>
+
+                    <ImageButton
+                        android:id="@+id/button_lower_product_quantity"
+                        style="@style/whWrapContent"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@id/text_product_quantity"
+                        android:background="@color/colorSecondary"
+                        android:src="@drawable/ic_keyboard_arrow_down_black_24dp"/>
+
+                    <ImageButton
+                        android:id="@+id/button_rise_product_quantity"
+                        style="@style/whWrapContent"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@id/text_product_quantity"
+                        android:background="@color/colorSecondary"
+                        android:src="@drawable/ic_keyboard_arrow_up_black_24dp"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/ProductDetailsInfoLayout">
+
+            <TextView
+                style="@style/ProductDetailsInfoTitle"
+                android:text="@string/product_picture_title"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/product_picture"
+                    android:layout_width="@dimen/picture_width"
+                    android:layout_height="@dimen/picture_height"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/border"
+                    android:scaleType="fitXY"/>
+
+                <ImageButton
+                    android:id="@+id/button_call_file_pick"
+                    style="@style/ProductDetailsInfoPictureButton"
+                    android:layout_marginEnd="@dimen/double_padding"
+                    android:layout_toStartOf="@id/product_picture"
+                    android:src="@drawable/ic_insert_drive_file_black_24dp"/>
+
+                <ImageButton
+                    android:id="@+id/button_call_camera"
+                    style="@style/ProductDetailsInfoPictureButton"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="@dimen/double_padding"
+                    android:layout_toEndOf="@id/product_picture"
+                    android:src="@drawable/ic_photo_camera_black_24dp"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/whMatchWrap"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/button_save_inventory"
+                style="@style/whWrapContent"
+                android:layout_marginBottom="@dimen/double_padding"
+                android:layout_marginTop="@dimen/double_padding"
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:backgroundTint="@color/colorSecondary"
+                android:backgroundTintMode="multiply"
+                android:text="@string/button_save_product"/>
+
+            <Button
+                android:id="@+id/button_delete_inventory"
+                style="@style/whWrapContent"
+                android:layout_marginBottom="@dimen/double_padding"
+                android:layout_marginTop="@dimen/double_padding"
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:backgroundTint="@color/colorSecondary"
+                android:backgroundTintMode="multiply"
+                android:text="@string/button_delete_product"/>
+
+            <Button
+                android:id="@+id/button_order_product"
+                style="@style/whWrapContent"
+                android:layout_marginBottom="@dimen/double_padding"
+                android:layout_marginTop="@dimen/double_padding"
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:backgroundTint="@color/colorSecondary"
+                android:backgroundTintMode="multiply"
+                android:text="@string/button_order_product"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
