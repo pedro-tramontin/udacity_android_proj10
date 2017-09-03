@@ -417,6 +417,19 @@ public class InventoryEditorActivity extends AppCompatActivity implements Loader
             return false;
         }
 
+        if (TextUtils.isEmpty(mProductQuantity.getText())) {
+            Utils.shortToast(this, Utils.getString(this, R.string.quantity_required));
+
+            return false;
+        } else {
+            int quantity = Integer.valueOf(mProductQuantity.getText().toString());
+            if (quantity == 0) {
+                Utils.shortToast(this, Utils.getString(this, R.string.quantity_required));
+
+                return false;
+            }
+        }
+
         if (mProductBitmap == null) {
             Utils.shortToast(this, Utils.getString(this, R.string.picture_required));
 

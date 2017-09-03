@@ -32,6 +32,7 @@
 
     <string name="name_required">Name is required</string>
     <string name="price_required">Price is required</string>
+    <string name="quantity_required">Quantity is required</string>
     <string name="picture_required">Picture is required</string>
 
     <string name="email_subject">New order of \u0025s</string>

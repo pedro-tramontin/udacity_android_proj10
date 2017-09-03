@@ -18,7 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".InventoryEditorActivity"/>
+        <activity
+            android:name=".InventoryEditorActivity"
+            android:parentActivityName=".MainActivity"/>
 
         <provider
             android:name=".InventoryProvider"
